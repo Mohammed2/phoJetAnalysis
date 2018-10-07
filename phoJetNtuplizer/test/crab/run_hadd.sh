@@ -2,8 +2,10 @@
 
 inputPath="/hdfs/store/user/varuns/NTuples/MC/MC2017_12Apr2018_94X/QCD/QCD_HT100To200"
 outputPath="/hdfs/store/user/varuns/NTuples/MC/MC2017_12Apr2018_94X/QCD/qcd_HT100To200"
+name="MC_QCD_HT100-200_"
 
-fileName="MC_QCD_HT100-200_"
+infileName=$inputPath/$name
+outfileName=$outputPath/$name
 
 checkNsubDir=`ls $inputPath | wc -l`
 
@@ -33,30 +35,33 @@ for (( iDir = 0; iDir < $checkNsubDir; iDir++)); do
       five=$(( (1000*$iDir)+($i*$fileToHadd)+4 ))
     fi
  
-    echo "hadd $fileName$outFileIndex.root $fileName$one.root $fileName$two.root $fileName$three.root $fileName$four.root $fileName$five.root"
+    hadd $outfileName$outFileIndex.root $infileName$one.root $infileName$two.root $infileName$three.root $infileName$four.root $infileName$five.root
   done
 
   if [ $remainder -eq 1 ]; then
     outFileIndex=$(( $outFileIndex+1 ))
     one=$(( ($five)+1 ))
-    echo "hadd $fileName$outFileIndex.root $fileName$one.root"
+    hadd $outfileName$outFileIndex.root $infileName$one.root
   elif [ $remainder -eq 2 ]; then
     outFileIndex=$(( $outFileIndex+1 ))
     one=$(( ($five)+1 ))
     two=$(( ($five)+2 ))
-    echo "hadd $fileName$outFileIndex.root $fileName$one.root $fileName$two.root"
+    hadd $outfileName$outFileIndex.root $infileName$one.root $infileName$two.root
   elif [ $remainder -eq 3 ]; then
     outFileIndex=$(( $outFileIndex+1 ))
     one=$(( ($five)+1 ))
     two=$(( ($five)+2 ))
     three=$(( ($five)+3 ))
-    echo "hadd $fileName$outFileIndex.root $fileName$one.root $fileName$two.root $fileName$three.root"
+    hadd $outfileName$outFileIndex.root $infileName$one.root $infileName$two.root $infileName$three.root
   elif [ $remainder -eq 4 ]; then
     outFileIndex=$(( $outFileIndex+1 ))
     one=$(( ($five)+1 ))
     two=$(( ($five)+2 ))
     three=$(( ($five)+3 ))
     four=$(( ($five)+4 ))
-    echo "hadd $fileName$outFileIndex.root $fileName$one.root $fileName$two.root $fileName$three.root $fileName$four.root"
+    hadd $outfileName$outFileIndex.root $infileName$one.root $infileName$two.root $infileName$three.root $infileName$four.root
  fi
 done
+
+
+echo " All Hadd DONE"
