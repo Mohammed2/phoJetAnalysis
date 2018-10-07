@@ -10,21 +10,20 @@ process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cf
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
-#process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
-process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v14')
+#process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_data', '')
+#process.GlobalTag = GlobalTag(process.GlobalTag, '94X_dataRun2_ReReco_EOY17_v6')
+process.GlobalTag = GlobalTag(process.GlobalTag, '94X_dataRun2_v6')
  
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
-process.MessageLogger.cerr.FwkReport.reportEvery = 10 #1000
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.MessageLogger.cerr.FwkReport.reportEvery = 10000 #1000
 
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
-    fileNames = cms.untracked.vstring(
-        'file:/hdfs/store/user/varuns/monoZprime/TEST-INPUTFILES/test_mc_12Apr2018_94X.root'
-    )
+    fileNames = cms.untracked.vstring($inputFileNames)
 )
 
 process.TFileService = cms.Service("TFileService", 
-    fileName = cms.string('Ntuple_mc.root')
+    fileName = cms.string('$outputFileName')
     )
 
 process.load( "PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff" )
@@ -40,11 +39,15 @@ setupEgammaPostRecoSeq(process,
 )
 #a sequence egammaPostRecoSeq has now been created and should be added to your path, eg process.p=cms.Path(process.egammaPostRecoSeq)
 
+##MET Corrections: Type-1
+from PhysicsTools.PatAlgos.tools.coreTools import *
+runOnData( process,  names=['Photons', 'Electrons','Muons','Taus','Jets'], outputModules = [] )
+
 #https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETUncertaintyPrescription#Instructions_for_9_4_X_X_9_for_2
 from PhysicsTools.PatUtils.tools.runMETCorrectionsAndUncertainties import runMetCorAndUncFromMiniAOD
 runMetCorAndUncFromMiniAOD (
     process,
-    isData = False, # false for MC
+    isData = True, # false for MC
     fixEE2017 = True,
     fixEE2017Params = {'userawPt': True, 'PtThreshold':50.0, 'MinEtaThreshold':2.65, 'MaxEtaThreshold': 3.139} , 
     postfix = "ModifiedMET"
@@ -64,7 +67,7 @@ na.runTauID()
 ### Analyzer Related
 process.load("phoJetAnalysis.phoJetNtuplizer.phoJetNtuplizer_cfi")
 process.phoJetNtuplizer.debug       = cms.bool(False);
-process.phoJetNtuplizer.is_Data      = cms.bool(False);  # False for MC
+process.phoJetNtuplizer.is_Data      = cms.bool(True);  # False for MC
 process.phoJetNtuplizer.runPhotons  = cms.bool(True);
 process.phoJetNtuplizer.runJets     = cms.bool(True);
 process.phoJetNtuplizer.runJetWidthCalculator = cms.bool(True); # needed for monoZprime Analysis [Valid only if runJets is True]
@@ -72,7 +75,7 @@ process.phoJetNtuplizer.runEle      = cms.bool(True);
 process.phoJetNtuplizer.runMuon     = cms.bool(True);
 process.phoJetNtuplizer.runTaus     = cms.bool(True);
 process.phoJetNtuplizer.runMet      = cms.bool(True);
-process.phoJetNtuplizer.runGenInfo  = cms.bool(True); # True for MC
+process.phoJetNtuplizer.runGenInfo  = cms.bool(False); # True for MC
 process.phoJetNtuplizer.pfmetToken  = cms.InputTag("slimmedMETsModifiedMET")
 
 process.p = cms.Path(

@@ -1,8 +1,8 @@
-#!/bin/tcsh                                                            
+#!/bin/bash
  
-foreach jobDir (`ls ${1}`)
+for jobDir in `ls ${1}`; do
    
 #echo "${jobDir}"
 crab kill -d ${1}/${jobDir}
    
-end
+done

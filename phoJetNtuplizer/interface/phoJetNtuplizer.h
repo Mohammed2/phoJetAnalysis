@@ -104,7 +104,7 @@ class phoJetNtuplizer : public edm::one::EDAnalyzer<edm::one::SharedResources>{
     void initMet();
     void initGenInfo();
 
-    bool isData_;
+    bool is_Data_;
     bool debug_;
 
     bool                                             runEventInfo_;

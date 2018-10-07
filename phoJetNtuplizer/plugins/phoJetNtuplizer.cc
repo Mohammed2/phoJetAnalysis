@@ -39,7 +39,7 @@ phoJetNtuplizer::phoJetNtuplizer(const edm::ParameterSet& iConfig):
   //now do what ever initialization is needed
 
   debug_                = iConfig.getParameter<bool>("debug");
-  isData_               = iConfig.getParameter<bool>("isData");
+  is_Data_               = iConfig.getParameter<bool>("is_Data");
 
   runEventInfo_              = iConfig.getParameter<bool>("runEventInfo");
   rhoToken_                  = consumes<double>                       (iConfig.getParameter<InputTag>("rhoToken"));

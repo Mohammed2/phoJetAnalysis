@@ -13,18 +13,16 @@ from Configuration.AlCa.GlobalTag_condDBv2 import GlobalTag
 #process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:run2_mc', '')
 process.GlobalTag = GlobalTag(process.GlobalTag, '94X_mc2017_realistic_v14')
  
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
-process.MessageLogger.cerr.FwkReport.reportEvery = 10 #1000
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.MessageLogger.cerr.FwkReport.reportEvery = 10000 #1000
 
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
-    fileNames = cms.untracked.vstring(
-        'file:/hdfs/store/user/varuns/monoZprime/TEST-INPUTFILES/test_mc_12Apr2018_94X.root'
-    )
+    fileNames = cms.untracked.vstring($inputFileNames)
 )
 
 process.TFileService = cms.Service("TFileService", 
-    fileName = cms.string('Ntuple_mc.root')
+    fileName = cms.string('$outputFileName')
     )
 
 process.load( "PhysicsTools.PatAlgos.producersLayer1.patCandidates_cff" )

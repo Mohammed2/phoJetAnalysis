@@ -2,7 +2,7 @@
 #include "phoJetAnalysis/phoJetNtuplizer/interface/phoJetNtuplizer.h"
 
 
-Int_t metFilters_;
+UShort_t metFilters_;
 float genMET_;
 float genMETPhi_;
 float pfMET_;
@@ -25,7 +25,7 @@ float pfMETPhi_T1UESDo_;
 
 void phoJetNtuplizer::branchMet(TTree* tree){
 
-  if (!isData_) {
+  if (!is_Data_) {
     tree->Branch("genMET",      &genMET_);
     tree->Branch("genMETPhi",   &genMETPhi_);
   }
@@ -77,7 +77,7 @@ void phoJetNtuplizer::fillMet(const edm::Event& iEvent, const edm::EventSetup& i
       LogDebug("METFilters") << metFilterNames[iFilter] << " is missing, exiting";
     else {
       if ( !patFilterResults.accept(index) ) {
-	metFilters_ += pow(2, iFilter+1);
+	setbit(metFilters_, iFilter);
       }
     }
   }
@@ -95,7 +95,7 @@ void phoJetNtuplizer::fillMet(const edm::Event& iEvent, const edm::EventSetup& i
     pfMETmEtSig_ = (pfMET->mEtSig() < 1.e10) ? pfMET->mEtSig() : 0;
     pfMETSig_    = (pfMET->significance() < 1.e10) ? pfMET->significance() : 0;
 
-    if (!isData_) {
+    if (!is_Data_) {
       genMET_    = pfMET->genMET()->et();
       genMETPhi_ = pfMET->genMET()->phi();
     }
