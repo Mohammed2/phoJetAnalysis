@@ -4,7 +4,6 @@ inputPath="/hdfs/store/user/varuns/NTuples/MC/MC2017_12Apr2018_94X/QCD/QCD_HT100
 outputPath="/hdfs/store/user/varuns/NTuples/MC/MC2017_12Apr2018_94X/QCD/qcd_HT100To200"
 name="MC_QCD_HT100-200_"
 
-infileName=$inputPath/$name
 outfileName=$outputPath/$name
 
 checkNsubDir=`ls $inputPath | wc -l`
@@ -13,6 +12,7 @@ outFileIndex=0;
 
 for (( iDir = 0; iDir < $checkNsubDir; iDir++)); do
 
+  infileName=$inputPath/000$iDir/$name
   filesInFolder=`ls $inputPath/000$iDir/*.root | wc -l`
   fileToHadd=5;			       
   nOutFiles=$(($filesInFolder/$fileToHadd))
@@ -35,31 +35,36 @@ for (( iDir = 0; iDir < $checkNsubDir; iDir++)); do
       five=$(( (1000*$iDir)+($i*$fileToHadd)+4 ))
     fi
  
-    hadd $outfileName$outFileIndex.root $infileName$one.root $infileName$two.root $infileName$three.root $infileName$four.root $infileName$five.root
+    hadd $name$outFileIndex.root $infileName$one.root $infileName$two.root $infileName$three.root $infileName$four.root $infileName$five.root
+    mv $name$outFileIndex.root $outfileName$outFileIndex.root
   done
 
   if [ $remainder -eq 1 ]; then
     outFileIndex=$(( $outFileIndex+1 ))
     one=$(( ($five)+1 ))
-    hadd $outfileName$outFileIndex.root $infileName$one.root
+    hadd $name$outFileIndex.root $infileName$one.root
+    mv $name$outFileIndex.root $outfileName$outFileIndex.root
   elif [ $remainder -eq 2 ]; then
     outFileIndex=$(( $outFileIndex+1 ))
     one=$(( ($five)+1 ))
     two=$(( ($five)+2 ))
-    hadd $outfileName$outFileIndex.root $infileName$one.root $infileName$two.root
+    hadd $name$outFileIndex.root $infileName$one.root $infileName$two.root
+    mv $name$outFileIndex.root $outfileName$outFileIndex.root
   elif [ $remainder -eq 3 ]; then
     outFileIndex=$(( $outFileIndex+1 ))
     one=$(( ($five)+1 ))
     two=$(( ($five)+2 ))
     three=$(( ($five)+3 ))
-    hadd $outfileName$outFileIndex.root $infileName$one.root $infileName$two.root $infileName$three.root
+    hadd $name$outFileIndex.root $infileName$one.root $infileName$two.root $infileName$three.root
+    mv $name$outFileIndex.root $outfileName$outFileIndex.root
   elif [ $remainder -eq 4 ]; then
     outFileIndex=$(( $outFileIndex+1 ))
     one=$(( ($five)+1 ))
     two=$(( ($five)+2 ))
     three=$(( ($five)+3 ))
     four=$(( ($five)+4 ))
-    hadd $outfileName$outFileIndex.root $infileName$one.root $infileName$two.root $infileName$three.root $infileName$four.root
+    hadd $name$outFileIndex.root $infileName$one.root $infileName$two.root $infileName$three.root $infileName$four.root
+    mv $name$outFileIndex.root $outfileName$outFileIndex.root
  fi
 done
 
