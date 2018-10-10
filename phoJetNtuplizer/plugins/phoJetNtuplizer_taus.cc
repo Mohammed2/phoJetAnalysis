@@ -174,7 +174,6 @@ void phoJetNtuplizer::branchTaus (TTree* tree){
     tree->Branch("taubyIsolationMVArun2017v2DBoldDMwLTraw2017",          &taubyIsolationMVArun2017v2DBoldDMwLTraw2017_);
     tree->Branch("taubyVVLooseIsolationMVArun2017v2DBoldDMwLT2017",      &taubyVVLooseIsolationMVArun2017v2DBoldDMwLT2017_);
     tree->Branch("taubyVLooseIsolationMVArun2017v2DBoldDMwLT2017",       &taubyVLooseIsolationMVArun2017v2DBoldDMwLT2017_);
-    tree->Branch("taubyVLooseIsolationMVArun2017v2DBoldDMwLT2017",       &taubyVLooseIsolationMVArun2017v2DBoldDMwLT2017_);
     tree->Branch("taubyLooseIsolationMVArun2017v2DBoldDMwLT2017",        &taubyLooseIsolationMVArun2017v2DBoldDMwLT2017_);
     tree->Branch("taubyMediumIsolationMVArun2017v2DBoldDMwLT2017",       &taubyMediumIsolationMVArun2017v2DBoldDMwLT2017_);
     tree->Branch("taubyTightIsolationMVArun2017v2DBoldDMwLT2017",        &taubyTightIsolationMVArun2017v2DBoldDMwLT2017_);
