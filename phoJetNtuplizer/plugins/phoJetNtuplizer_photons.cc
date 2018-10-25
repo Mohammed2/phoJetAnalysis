@@ -47,10 +47,6 @@ vector<UShort_t> phoMVAIDbit_;
 vector<float>    phoSeedTime_;
 vector<float>    phoSeedEnergy_;
 
-vector<UInt_t>   phoFiredSingleTrgs_;
-vector<UInt_t>   phoFiredDoubleTrgs_;
-vector<UInt_t>   phoFiredTripleTrgs_;
-vector<UInt_t>   phoFiredL1Trgs_;
 
 vector<float>    phoScale_up_;
 vector<float>    phoScale_dn_;
@@ -67,6 +63,12 @@ vector<float>    phoResol_rho_up_;
 vector<float>    phoResol_rho_dn_;
 vector<float>    phoResol_phi_up_;
 vector<float>    phoResol_phi_dn_;
+
+
+vector<ULong64_t> phoFiredSingleTrgs_;
+vector<ULong64_t> phoFiredDoubleTrgs_;
+vector<ULong64_t> phoFiredTripleTrgs_;
+vector<ULong64_t> phoFiredL1Trgs_;
 
 void phoJetNtuplizer::branchPhotons(TTree* tree){
 
@@ -108,6 +110,12 @@ void phoJetNtuplizer::branchPhotons(TTree* tree){
   tree->Branch("phoPFChWorstIso",          &phoPFChWorstIso_);
   tree->Branch("phoPFPhoIso",              &phoPFPhoIso_);
   tree->Branch("phoPFNeuIso",              &phoPFNeuIso_);
+
+  tree->Branch("phoFiredSingleTrgs",      &phoFiredSingleTrgs_);
+  tree->Branch("phoFiredDoubleTrgs",      &phoFiredDoubleTrgs_);
+  tree->Branch("phoFiredTripleTrgs",      &phoFiredTripleTrgs_);
+  tree->Branch("phoFiredL1Trgs",          &phoFiredL1Trgs_);
+
 
   tree->Branch("phoIDMVA",                 &phoIDMVA_);
   tree->Branch("phoIDbit",                 &phoIDbit_);
@@ -223,6 +231,13 @@ void phoJetNtuplizer::fillPhotons(const edm::Event& iEvent, const edm::EventSetu
 
     phoMVAIDbit_              .push_back(tmpphoMVAIDbit);
 
+
+
+    phoFiredSingleTrgs_     .push_back(matchSinglePhotonTriggerFilters(ipho->et(), ipho->eta(), ipho->phi()));
+    phoFiredDoubleTrgs_     .push_back(matchDoublePhotonTriggerFilters(ipho->et(), ipho->eta(), ipho->phi()));
+    phoFiredTripleTrgs_     .push_back(matchTriplePhotonTriggerFilters(ipho->et(), ipho->eta(), ipho->phi()));
+    phoFiredL1Trgs_         .push_back(matchL1TriggerFilters(ipho->et(), ipho->eta(), ipho->phi()));
+
     ////// Seed time and energy
     DetId seed = (ipho->superCluster()->seed()->hitsAndFractions())[0].first;
     bool isBarrel = seed.subdetId() == EcalBarrel;
@@ -308,6 +323,11 @@ void phoJetNtuplizer::initPhotons(){
   phoSigmaIEtaIPhiFull5x5_     .clear();
   phoSigmaIPhiIPhiFull5x5_     .clear();
 
+  phoFiredSingleTrgs_     .clear();
+  phoFiredDoubleTrgs_     .clear();
+  phoFiredTripleTrgs_     .clear();
+  phoFiredL1Trgs_         .clear();
+
   phoPFChIso_                  .clear();
   phoPFChWorstIso_             .clear();
   phoPFPhoIso_                 .clear();
@@ -319,11 +339,6 @@ void phoJetNtuplizer::initPhotons(){
 
   phoSeedTime_                 .clear();
   phoSeedEnergy_               .clear();
-
-  phoFiredSingleTrgs_          .clear();
-  phoFiredDoubleTrgs_          .clear();
-  phoFiredTripleTrgs_          .clear();
-  phoFiredL1Trgs_              .clear();
 
   phoScale_up_                 .clear();
   phoScale_dn_                 .clear();
