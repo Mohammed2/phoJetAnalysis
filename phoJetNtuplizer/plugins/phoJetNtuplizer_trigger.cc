@@ -85,7 +85,7 @@ void phoJetNtuplizer::initTriggerFilters(const edm::Event &e) {
     //HLT_Ele32_eta2p1_WPTight_Gsf                                                                             
     eleSingleFilters["hltEle32WPTightGsfTrackIsoFilter"] = 13;
     //HLT_Ele35_WPTight_Gsf                                                                                    
-    eleSingleFilters["hltEle35WPTightGsfTrackIsoFilter"] = 14;
+    eleSingleFilters["hltEle35noerWPTightPixelMatchFilter"] = 14;
     //HLT_Ele45_WPLoose_Gsf                                                                                    
     eleSingleFilters["hltEle45WPLooseGsfTrackIsoFilter"] = 15;
     //HLT_Ele22_eta2p1_WPLoose_Gsf_LooseIsoPFTau20_SingleL1 
